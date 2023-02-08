@@ -2,11 +2,12 @@ const crypto = require(`crypto`)
 const stringify = require(`json-stringify-safe`)
 const fetch = require(`./fetch`)
 const normalize = require(`./normalize`)
+const { createNodeFactory } = require(`gatsby-node-helpers`)
 
 const typePrefix = `thirdParty__`
 
 exports.sourceNodes = async ({
-  boundActionCreators,
+  actions,
   createNodeId,
   reporter
 }, {
@@ -20,13 +21,13 @@ exports.sourceNodes = async ({
   name,
   verboseOutput = false
 }) => {
-  const { createNode } = boundActionCreators;
+  const { createNode } = actions;
 
   // If true, output some info as the plugin runs
   let verbose = verboseOutput
 
   // Create an entity type from prefix and name supplied by user
-  let entityType = `${typePrefix}${name}`
+  const entityType = createNodeFactory(typePrefix + name)
   // console.log(`entityType: ${entityType}`);
 
   // Fetch the data
